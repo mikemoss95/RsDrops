@@ -85,19 +85,19 @@ namespace RsDropSim
             //adding values in each list of each item, then summing total
             foreach (var item in itemTassets)
             {
-                sumOfTassets += bandosTassets.value;
+                sumOfTassets += bandosTassets.Value;
             }
             foreach (var item in itemChestplate)
             {
-                sumOfChestplates += bandosChestplate.value;
+                sumOfChestplates += bandosChestplate.Value;
             }
             foreach (var item in itemBoots)
             {
-                sumOfBoots += bandosBoots.value;
+                sumOfBoots += bandosBoots.Value;
             }
             foreach (var item in itemHilt)
             {
-                sumofHilts += bandosHilt.value;
+                sumofHilts += bandosHilt.Value;
             }
             uint sumOfTotal = sumOfTassets + sumofHilts + sumOfChestplates + sumOfBoots;
 
@@ -151,11 +151,11 @@ namespace RsDropSim
 
             foreach(Drops cbow in armadylCrossbow)
             {
-                acbSum += ACB.value;
+                acbSum += ACB.Value;
             }
             foreach(Drops hilt in saraHilt)
             {
-                hiltSum += Hilt.value;
+                hiltSum += Hilt.Value;
             }
 
             uint totalValue = acbSum + hiltSum;
@@ -212,11 +212,11 @@ namespace RsDropSim
 
             foreach(var item in Spear)
             {
-                spearValue += zamorakianSpear.value;
+                spearValue += zamorakianSpear.Value;
             }
             foreach (var item in Hilt)
             {
-                hiltValue += zamorakHilt.value;
+                hiltValue += zamorakHilt.Value;
             }
             listBox1.Items.Add("You have received x" + Spear.Count + " Zamorakian Spear");
             listBox1.Items.Add("You have received x" + Hilt.Count + " Zamorakian Hilt");

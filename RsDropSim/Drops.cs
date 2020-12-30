@@ -9,12 +9,12 @@ namespace RsDropSim
     public class Drops
     {
         public string Item { get; set; }
-        public uint value { get; set; }
+        public uint Value { get; set; }
 
         public Drops(string itemName, uint itemValue)
         {
             Item = itemName;
-            value = itemValue;
+            Value = itemValue;
         }
 
         public Drops(string itemName)
