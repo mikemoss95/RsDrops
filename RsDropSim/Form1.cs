@@ -12,7 +12,6 @@ namespace RsDropSim
 {
     public partial class Form1 : Form
     {
-        public Dictionary<Drops, int> Drops;
         public Form1()
         {
             InitializeComponent();
@@ -24,7 +23,11 @@ namespace RsDropSim
         {
             listBox1.Items.Clear();
 
-            Drops = new Dictionary<Drops, int>();
+            List<Drops> itemTassets = new List<Drops>();
+            List<Drops> itemChestplate = new List<Drops>();
+            List<Drops> itemBoots = new List<Drops>();
+            List<Drops> itemHilt = new List<Drops>();
+            List<Drops> itemPet = new List<Drops>();
 
             Drops bandosTassets = new Drops("Bandos Tassets", 27275614);
             Drops bandosChestplate = new Drops("Bandos Chestplate", 18933772);
@@ -32,41 +35,75 @@ namespace RsDropSim
             Drops bandosHilt = new Drops("Bandos Hilt", 9694593);
             Drops bandosPet = new Drops("Pet general graardor");
 
-            for (int i = 0; i < int.Parse(textBox1.Text); i++)
+            if (textBox1.Text == "")
             {
-                var armor = rnd.Next(1, 382);
-                var hilt = rnd.Next(1, 509);
-                var pet = rnd.Next(1, 5001);
-                //armor rolls
-                if (armor == 1)
-                {
-                    AddEntry(bandosTassets);
-                }
-                else if (armor == 2)
-                {
-                    AddEntry(bandosChestplate);
-                }
-                else if (armor == 3)
-                {
-                    AddEntry(bandosBoots);
-                }
-
-                if (hilt == 1)
-                {
-                    AddEntry(bandosHilt);
-                }
-
-                if (pet == 1)
-                {
-                    AddEntry(bandosPet);
-                }
+                MessageBox.Show("Enter the amount of kills");
+                textBox1.Focus();
             }
-            
-            if (Drops.Count > 0)
+            else
             {
-                DisplayOutput();
-            } else {
-                listBox1.Items.Add("No luck this time :(");
+                for (int i = 0; i < int.Parse(textBox1.Text); i++)
+                {
+                    var armor = rnd.Next(1, 382);
+                    var hilt = rnd.Next(1, 509);
+                    var pet = rnd.Next(1, 5001);
+                    //armor rolls
+                    if (armor == 1)
+                    {
+                        itemTassets.Add(bandosTassets);
+                    }
+                    else if (armor == 2)
+                    {
+                        itemChestplate.Add(bandosChestplate);
+                    }
+                    else if (armor == 3)
+                    {
+                        itemBoots.Add(bandosBoots);
+                    }
+
+                    if (hilt == 1)
+                    {
+                        itemHilt.Add(bandosHilt);
+                    }
+
+                    if (pet == 1)
+                    {
+                        itemPet.Add(bandosPet);
+                    }
+                }
+                listBox1.Items.Add("You have received x" + itemTassets.Count + " Bandos Tassets");
+                listBox1.Items.Add("You have received x" + itemChestplate.Count + " Bandos Chestplate");
+                listBox1.Items.Add("You have received x" + itemBoots.Count + " Bandos Boots");
+                listBox1.Items.Add("You have received x" + itemHilt.Count + " Bandos hilt");
+                listBox1.Items.Add("You have received x" + itemPet.Count + " Pet general graador");
+            }
+            uint sumOfTassets = 0;
+            uint sumOfChestplates = 0;
+            uint sumOfBoots = 0;
+            uint sumofHilts = 0;
+
+            //adding values in each list of each item, then summing total
+            foreach (var item in itemTassets)
+            {
+                sumOfTassets += bandosTassets.Value;
+            }
+            foreach (var item in itemChestplate)
+            {
+                sumOfChestplates += bandosChestplate.Value;
+            }
+            foreach (var item in itemBoots)
+            {
+                sumOfBoots += bandosBoots.Value;
+            }
+            foreach (var item in itemHilt)
+            {
+                sumofHilts += bandosHilt.Value;
+            }
+            uint sumOfTotal = sumOfTassets + sumofHilts + sumOfChestplates + sumOfBoots;
+
+            if (textBox1.Text != "")
+            {
+                listBox1.Items.Add("You have earned " + string.Format("{0:n0}", sumOfTotal) + " gp!");
             }
 
         }
@@ -187,41 +224,8 @@ namespace RsDropSim
             listBox1.Items.Add("You have received " + string.Format("{0:n0}", (spearValue + hiltValue)) + "gp!");
         }
 
-        private void DisplayOutput() {
-            //Drops Output
-            foreach (var kvp in Drops) {
-                listBox1.Items.Add($"You have recieved x{kvp.Value} {kvp.Key.Item}");
-            }
-
-            //Value Output
-            long sumOfTotal = 0;
-            foreach (var kvp in Drops) {
-                sumOfTotal += kvp.Value * kvp.Key.Value;
-            }
-            listBox1.Items.Add("You have earned " + string.Format("{0:n0}", sumOfTotal) + " gp!");
-        }
-
-        private void AddEntry(Drops drop) {
-            if(Drops.ContainsKey(drop)) {
-                Drops[drop] += 1;
-            } else {
-                Drops.Add(drop, 1);
-            }
-        }
-
         private void btnRoll_Click(object sender, EventArgs e)
         {
-            //Guarding our methods in the case of invalid input
-            if(comboBox1.SelectedIndex == -1) {
-                MessageBox.Show("Please select a boss.");
-                return;
-            }
-
-            if (!int.TryParse(textBox1.Text, out _)) {
-                MessageBox.Show("Please enter a valid number of kills.");
-                return;
-            }
-
             listBox1.Items.Clear();
             if (comboBox1.SelectedIndex == 0)
             {
@@ -235,13 +239,12 @@ namespace RsDropSim
             {
                 zamorakRoller();
             }
-            
         }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
             listBox1.Items.Clear();
-            comboBox1.SelectedIndex = -1;
+            comboBox1.Text = "";
             textBox1.Text = "";
         }
     }
